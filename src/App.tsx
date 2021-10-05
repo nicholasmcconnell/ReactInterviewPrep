@@ -1,13 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
+
 import './App.css';
 
-const { useState } = React;
+const { useState, useEffect } = React;
 
 function App() {
 
   const [counter, setCounter] = useState(0);
-  const [command, setCommand] = useState('');
+  const [jsonRes, setJsonRes] = useState('');
 
   const increment = () => {
     setCounter(counter + 1);
@@ -18,6 +19,22 @@ function App() {
     setCounter(counter - 1);
   }
 
+
+
+  useEffect(() => {
+    const jsonGet = async () => {
+      try {
+        let { data: { results } } = await axios.get('https://randomuser.me/api');
+        // console.log(data);
+        setJsonRes(JSON.stringify(results, null, 10));
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    jsonGet();
+  }, [counter])
+
   return (
     <div className="App">
       <header className="App-header">
@@ -26,13 +43,17 @@ function App() {
         </p>
       </header>
 
-      {/* COUNTER */}
+      {/* ------------ COUNTER ------------ */}
 
       <p>{counter}</p>
       <button onClick={() => decrement()}>Decrement</button>
       <button onClick={() => increment()}>Increment</button>
 
+      {/* ------------ AXIOS CALL -------------- */}
 
+      <p>
+        {jsonRes}
+      </p>
 
     </div>
   );
