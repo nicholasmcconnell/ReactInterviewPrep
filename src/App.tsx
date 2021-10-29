@@ -1,69 +1,83 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import './App.css';
-
-const { useState, useEffect } = React;
-
+import TodoInput from './components/TodoInput';
+//https://randomuser.me/api?page=
 function App() {
 
-  const [randomUserDataJSON, setRandomUserData] = useState<any>([]);
-  const [nextPageNumber, setNextPageNumber] = useState<any>(1);
-  const [jsonRes, setJsonRes] = useState();
-  const [users, setUsers] = useState([]);
+  // const [increment, setIncrement] = useState<number>(0)
+  // const [randomUser, setRandomUser] = useState<any>([]);
+  // const [nextPage, setNextPage] = useState<number>(1);
+  // const [users, setUsers] = useState<any>([]);
 
-  const fetchRandomData = async (pageNumber: number) => {
-    try {
-      let { data } = await axios.get(`https://randomuser.me/api?page=${pageNumber}`);
-      let { results } = data;
+  // const onClickIncrement = (): void => {
+  //   setIncrement(increment + 1);
+  // }
 
-      setRandomUserData(results);
-      setUsers([...users, ...results]);
+  // useEffect(() => {
+  //   fetchUser(nextPage);
+  // }, [])
 
-    } catch (err) {
-      console.error(err);
-    }
+  // const fetchUser = async (nextPage: number) => {
+  //   try {
+  //     const { data: { results } } = await axios.get(`https://randomuser.me/api/?page=${nextPage}`)
+  //     console.log(nextPage)
+  //     setNextPage(nextPage + 1);
+  //     // const { results } = userData;
+  //     // setRandomUser(results);
+  //     setUsers([...users, ...results])
+  //     console.log(results);
+
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
+  // interface FullName {
+  //   first: string,
+  //   last: string
+  // }
+
+  // const getFullName = (user: any): string => {
+
+  //   const { name: { first, last } } = user;
+
+  //   return `${first} ${last}`;
+  // }
+
+  // const getUserImage = (user: any): string => {
+
+  //   const { picture: { large } } = user;
+  //   console.log(large)
+  //   return large;
+  // }
+
+  // const addUser = async () => {
+  //   try {
+  //     await fetchUser(nextPage);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  const [todoArray, setTodoArray] = useState<string[]>([]);
+
+  const addNewTodo = (newTodo: string) => {
+    setTodoArray([...todoArray, newTodo])
   }
 
+  const deleteTodo = () => {
+    todoArray.pop();
+    console.log(todoArray)
+    setTodoArray([...todoArray]);
+  }
 
   useEffect(() => {
-    fetchRandomData(nextPageNumber);
-  }, [])
 
-  interface UserName {
-    first: string,
-    last: string,
-    title: string
-  }
+  }, [todoArray])
 
-  interface UserPicture {
-    large: string,
-  }
 
-  interface UserInfo {
-    userInfo: UserName,
-    picture: UserPicture,
-  }
-
-  const getFullUserName = (randomUser: any) => {
-    const { name: { first, last } } = randomUser;
-    return `${first} ${last}`;
-  }
-
-  const getUserImage = (randomUser: any): string => {
-    const { picture: { large } } = randomUser;
-    return large;
-  }
-
-  const addUsers = async () => {
-    try {
-      fetchRandomData(nextPageNumber);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  // const getUserImage = ()
   return (
     <div className="App">
       <header className="App-header">
@@ -72,36 +86,47 @@ function App() {
         </p>
       </header>
 
+      {/* ------------ TODO LIST ------------ */}
+
+      <TodoInput
+        addNewTodo={addNewTodo}
+        deleteTodo={deleteTodo}
+      />
+
+      {/*
+      1.have an input that updates state array
+      2. map over that array and show list
+      
+      */}
+
+      <ul>
+        {todoArray.map((todo, idx) => {
+          return <li key={idx}>{todo}</li>;
+        })}
+      </ul>
+
+
+
       {/* ------------ COUNTER ------------ */}
 
-      {/* <p>{counter}</p>
-      <button onClick={() => [decrement()]}>Decrement</button>
-      <button onClick={() => increment()}>Increment</button> */}
+      {/* <p>{increment}</p>
+      <button onClick={onClickIncrement}>{'Increment'}</button> */}
 
       {/* ------------ AXIOS CALL -------------- */}
 
+
       {/* ------------ RENDER NAME AND PIC TO SCREEN -------------- */}
 
-      <button
-        onClick={() => addUsers()}
-      >
-        Fetch Next User
-      </button>
-      <div>
-        {users.map((randomUser: any, idx: number) => {
-          // let { name: { first, last } } = randomUser;
-          let { picture: { large } } = randomUser;
-          return (
-            <div>
-              <h2
-                key={idx}
-              >
-                {getFullUserName(randomUser)}</h2>
-              <img src={large} alt='User'></img>
-            </div>
-          )
-        })}
-      </div>
+      {/* <button onClick={addUser}>Add User</button>
+      {users.map((user: any) => {
+        return (
+          <div key={user.login.uuid} >
+            <p>{getFullName(user)}</p>
+            <img src={getUserImage(user)} alt="userPicture" />
+          </div>
+        )
+      })} */}
+
       {/* ------------ APPEND USERS TO SCREEN -------------- */}
 
 
