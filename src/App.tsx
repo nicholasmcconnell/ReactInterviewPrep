@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import './App.css';
 import TodoInput from './components/TodoInput';
+import Button from './components/button/button';
 //https://randomuser.me/api?page=
 function App() {
 
@@ -104,6 +105,8 @@ function App() {
           return <li key={idx}>{todo}</li>;
         })}
       </ul>
+
+      <Button label='TestDemo' />
 
 
 
