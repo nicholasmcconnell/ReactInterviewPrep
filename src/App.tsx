@@ -4,6 +4,7 @@ import axios from 'axios';
 import './App.css';
 import TodoInput from './components/TodoInput';
 import Button from './components/button/button';
+import Todo from './components/Todo/Todo';
 //https://randomuser.me/api?page=
 function App() {
 
@@ -78,6 +79,12 @@ function App() {
 
   }, [todoArray])
 
+  //for todo testing demo
+  const todos = [
+    { id: 1, title: 'wash dishes', completed: false },
+    { id: 2, title: 'make dinner', completed: true },
+  ]
+
 
   return (
     <div className="App">
@@ -100,13 +107,19 @@ function App() {
       
       */}
 
-      <ul>
+      {/* <ul>
         {todoArray.map((todo, idx) => {
           return <li key={idx}>{todo}</li>;
         })}
-      </ul>
+      </ul> */}
+
+      {/* ------------ TEST TODO ------------ */}
+      {todos.map((todo) => {
+        return (<Todo todo={todo} />)
+      })}
 
       <Button label='TestDemo' />
+
 
 
 
